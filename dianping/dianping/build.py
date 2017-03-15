@@ -11,7 +11,7 @@ key = settings.REDIS_START_URLS_KEY
 key = "dianping_test2"
 db = from_settings(s)
 
-city_ids = range(3,18)
+city_ids = range(1,10)
 for city_id in city_ids:
     j = {"city_id":city_id}
     db.rpush(key,json.dumps(j))  #加在最右边，lpush是加在左边
