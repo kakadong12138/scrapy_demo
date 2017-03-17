@@ -58,7 +58,9 @@ class DianpingSpiderMiddleware(object):
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
+#如果改request已经重试次数满了，就返回一个http code为12138的response
 class DealUnsuccessRequestMiddleware(RetryMiddleware):
+    
     def process_response(self, request, response, spider):
         if request.meta.get('dont_retry', False):
             return response
