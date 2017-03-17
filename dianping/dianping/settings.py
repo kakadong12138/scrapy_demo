@@ -11,6 +11,7 @@
 
 BOT_NAME = 'dianping'
 
+DUPEFILTER_CLASS = "dianping.MyDupeFilter.MyRFPDupeFilter"
 SPIDER_MODULES = ['dianping.spiders']
 NEWSPIDER_MODULE = 'dianping.spiders'
 
@@ -18,16 +19,26 @@ REDIS_START_URLS_BATCH_SIZE = 3
 REDIS_START_URLS_AS_SET = False
 #REDIS_START_URLS_KEY = "dianping_test1"
 REDIS_PARAMS = {
-    "host":"localhost",
+    "host":"localhost"
 }
 
-
+DOWNLOADER_MIDDLEWARES = {
+        'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware' : None,
+        'dianping.middlewares.RotateUserAgentMiddleware' :400,
+        'crapy.contrib.downloadermiddleware.retry.RetryMiddleware' :None,
+        'dianping.middlewares.DealUnsuccessRequestMiddleware' :100,
+        }
+ITEM_PIPELINES = {
+    'dianping.pipelines.RedisPipeline': 400,
+    }
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'dianping (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-
+DOWNLOAD_TIMEOUT = 5
+CONCURRENT_REQUESTS = 2
+RETRY_TIMES = 1
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
